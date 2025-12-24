@@ -3,6 +3,7 @@ package com.expensemanager.smartexpenseapplication.controller;
 import com.expensemanager.smartexpenseapplication.entity.Expense;
 import com.expensemanager.smartexpenseapplication.entity.RangeType;
 import com.expensemanager.smartexpenseapplication.service.ExpenseService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,12 +29,12 @@ public class ExpenseController
     }
 
     @PostMapping("/filter/belowthelimit")
-    public Map<String,Double> filterExpenseBelowTheLimit(@RequestBody double price)
+    public Map<String,Double> filterExpenseBelowTheLimit(@Valid @RequestBody double price)
     {
         return expenseService.filterExpenseBelowTheLimit(price);
     }
     @PostMapping("/filter/abovethelimit")
-    public Map<String,Double> filterExpenseAboveTheLimit(@RequestBody double price)
+    public Map<String,Double> filterExpenseAboveTheLimit(@Valid @RequestBody double price)
     {
         return expenseService.filterExpenseAboveTheLimit(price);
     }
