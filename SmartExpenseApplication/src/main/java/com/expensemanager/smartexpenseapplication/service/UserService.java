@@ -1,6 +1,7 @@
 package com.expensemanager.smartexpenseapplication.service;
 
 
+import com.expensemanager.smartexpenseapplication.annotation.TrackTime;
 import com.expensemanager.smartexpenseapplication.entity.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -13,6 +14,7 @@ import java.util.UUID;
 public class UserService {
 
     HashMap<Long, User> userList = new HashMap<>();
+
 
     public ResponseEntity<String> addUser(Long mobile, User user)
     {
@@ -27,6 +29,7 @@ public class UserService {
             return ResponseEntity.ok("DUPLICATE USERS NOT ALLOWED !");
         return ResponseEntity.ok("USER ADDED SUCCESSFULLY !");
     }
+
 
     public Collection<User> viewAllUsers() {
         Collection<User> temp = userList.values();
