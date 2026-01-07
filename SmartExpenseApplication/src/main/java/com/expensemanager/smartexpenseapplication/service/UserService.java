@@ -2,54 +2,47 @@ package com.expensemanager.smartexpenseapplication.service;
 
 
 import com.expensemanager.smartexpenseapplication.entity.User;
+import com.expensemanager.smartexpenseapplication.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.UUID;
+import java.util.List;
 
 @Service
 public class UserService {
 
-    HashMap<Long, User> userList = new HashMap<>();
+    @Autowired
+    private UserRepository userRepository;
 
-
-    public ResponseEntity<String> addUser(Long mobile, User user)
+    public ResponseEntity<String> addUser(User user)
     {
-        if (userList.containsKey(mobile) == false)
+        if (userRepository.findByMobile(user.getMobile()) != null )
         {
-            UUID uuid = UUID.randomUUID();
-            String id = uuid.toString();
-            user.setId(id);
-            userList.put(mobile, user);
-        }
-        else
             return ResponseEntity.ok("DUPLICATE USERS NOT ALLOWED !");
+        }
+        userRepository.save(user);
         return ResponseEntity.ok("USER ADDED SUCCESSFULLY !");
     }
 
 
-    public Collection<User> viewAllUsers() {
-        Collection<User> temp = userList.values();
-        return temp;
+    public List<User> viewAllUsers() {
+        return userRepository.findAll();
     }
 
     public User getUserByPhoneNumber(Long mobile)
     {
-        /*if(userList.containsKey(mobile))
+        /*
+        if(userList.containsKey(mobile))
+
             return (userList.get(mobile).getId()+"\n"+userList.get(mobile).getName()).toString();
         else
-            return "MATCH NOT FOUND !!";*/
+            return "MATCH NOT FOUND !!";
         System.out.println(userList.get(mobile));
         return userList.get(mobile);
+        */
+         return userRepository.findByMobile(mobile);
     }
 
-    public User getUser(Long mobile)
-    {
-        if(userList.containsKey(mobile))
-            return userList.get(mobile);
-        else
-            return null;
-    }
 }

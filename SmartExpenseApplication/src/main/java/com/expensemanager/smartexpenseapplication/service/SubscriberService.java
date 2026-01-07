@@ -22,7 +22,7 @@ public class SubscriberService {
     List<UserSubscriberDTO> dtoList = new ArrayList<>();
     public ResponseEntity<List<UserSubscriberDTO>> addSubscriber(Subscriber subscriber)
     {
-            User s = userService.getUser(subscriber.getMobile());
+            User s = userService.getUserByPhoneNumber(subscriber.getMobile());
             if(s == null)
             {
                 return ResponseEntity.notFound().build();

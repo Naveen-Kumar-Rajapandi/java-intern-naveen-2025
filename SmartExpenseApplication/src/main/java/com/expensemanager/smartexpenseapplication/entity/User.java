@@ -1,25 +1,25 @@
 package com.expensemanager.smartexpenseapplication.entity;
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+@AllArgsConstructor
+@NoArgsConstructor
 @Data
-public class User {
+@Entity
+public class User
+{
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-
-    private String id;
     @NotBlank(message = "Name is Mandatory")
     private String name;
-    private String company;
-    @NotBlank(message = "mobile number is mandatory")
-    private long mobile;
-    public User() {
-    }
-    public User(String id,String name,long mobile)
-    {
-        this.id=id;
-        this.name=name;
-        company="KOVAN LABS";
-        this.mobile=mobile;
-    }
+
+    @NotNull(message = "mobile number is mandatory")
+    @Column(unique = true)
+    private Long mobile;
+
 }

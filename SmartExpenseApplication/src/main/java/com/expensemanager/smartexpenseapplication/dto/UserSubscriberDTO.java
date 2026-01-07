@@ -9,8 +9,8 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
-public class UserSubscriberDTO {
-
+public class UserSubscriberDTO
+{
     private User user;
     private Subscriber subscriber;
 }

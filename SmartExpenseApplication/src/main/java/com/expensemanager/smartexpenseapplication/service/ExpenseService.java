@@ -1,73 +1,54 @@
 package com.expensemanager.smartexpenseapplication.service;
 
 import com.expensemanager.smartexpenseapplication.entity.Expense;
+import com.expensemanager.smartexpenseapplication.entity.*;
 import com.expensemanager.smartexpenseapplication.entity.RangeType;
+import com.expensemanager.smartexpenseapplication.repository.ExpenseRepository;
+import com.expensemanager.smartexpenseapplication.repository.UserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @Service
 public class ExpenseService
 {
-    Map<String,Double> expenseList = new HashMap<>();
-    public ResponseEntity<String> addExpense(Expense expense)
+    @Autowired
+    ExpenseRepository expenseRepository;
+    @Autowired
+    UserRepository userRepository;
+
+
+    public ResponseEntity<String> addExpense (Expense expense)
     {
-        if(expenseList.containsKey(expense.getCategory()))
-        {
-            expenseList.compute(expense.getCategory(),(key,oldValue) -> oldValue + expense.getExpense());
-            return ResponseEntity.ok("EXPENSE UPDATED IN EXIST CATEGORY !!!");
-        }
-        else
-        {
-            expenseList.put(expense.getCategory(), expense.getExpense());
-            return ResponseEntity.ok("EXPENSE ADDED SUCCESSFULLY !!!");
-        }
+        User user = userRepository.findByMobile(expense.getUser().getMobile());
+        expenseRepository.save(expense);
+        return ResponseEntity.ok("EXPENSE ADDED SUCCESSFULLY !!");
     }
 
-    public Map<String,Double> viewExpenseList()
+    public List<Expense> viewExpenseList()
     {
-        return expenseList;
+        return expenseRepository.findAll();
     }
 
-    public Map<String,Double> filterExpenseBelowTheLimit(double price)
+    public List<Expense> filterExpenseBelowTheLimit(Double price)
     {
-        return expenseList.entrySet().stream()
-                .filter(p -> p.getValue() < price)
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue
-                ));
+        return expenseRepository.findByExpenseLessThan(price);
     }
-    public Map<String,Double> filterExpenseAboveTheLimit(double price)
+    public List<Expense> filterExpenseAboveTheLimit(Double price)
     {
-        return expenseList.entrySet().stream()
-                .filter(p -> p.getValue() >= price)
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue
-                ));
+        return expenseRepository.findByExpenseGreaterThan(price);
     }
 
-    public Map<String,Double> filterExpenseBetweenTheRange(RangeType range)
+    public List<Expense> filterExpenseBetweenTheRange(RangeType range)
     {
-        return expenseList.entrySet().stream()
-                .filter(p -> p.getValue() >= range.initialPrice() && p.getValue() <= range.finalPrice())
-                .collect(Collectors.toMap(
-                        Map.Entry::getKey,
-                        Map.Entry::getValue
-                ));
+        return expenseRepository.findByExpenseBetween(range.initialPrice(), range.finalPrice());
     }
 
     public ResponseEntity<String> removeExpense(String removeExp)
     {
-        System.out.println(removeExp);
-        if(expenseList.containsKey(removeExp)) {
-            expenseList.remove(removeExp);
-            return ResponseEntity.ok("EXPENSE REMOVED FROM THE LIST");
-        }
-        return ResponseEntity.ok("NOT FOUND !!");
+        expenseRepository.deleteByExpense(removeExp);
+        return ResponseEntity.ok("EXPENSE DELETED SUCCESSFULLY !");
     }
 }

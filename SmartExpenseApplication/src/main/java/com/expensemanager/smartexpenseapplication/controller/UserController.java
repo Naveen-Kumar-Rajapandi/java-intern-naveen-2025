@@ -16,7 +16,7 @@ public class UserController
     UserService userService;
     @PostMapping("/add")
     public ResponseEntity<String> addUser(@RequestBody User user) {
-        return userService.addUser(user.getMobile(),user);
+        return userService.addUser(user);
     }
 
     @GetMapping("/view")

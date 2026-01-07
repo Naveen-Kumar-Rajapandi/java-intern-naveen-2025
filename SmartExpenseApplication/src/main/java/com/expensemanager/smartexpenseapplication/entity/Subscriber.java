@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Data
 public class Subscriber
 {
-    private long mobile;
+    private Long mobile;
     private Plan plan;
     private Status status;
 

@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -23,24 +24,24 @@ public class ExpenseController
     }
 
     @GetMapping("/view")
-    public Map<String,Double> viewExpenseList()
+    public List<Expense> viewExpenseList()
     {
         return expenseService.viewExpenseList();
     }
 
     @PostMapping("/filter/belowthelimit")
-    public Map<String,Double> filterExpenseBelowTheLimit(@Valid @RequestBody double price)
+    public List<Expense> filterExpenseBelowTheLimit(@Valid @RequestBody double price)
     {
         return expenseService.filterExpenseBelowTheLimit(price);
     }
     @PostMapping("/filter/abovethelimit")
-    public Map<String,Double> filterExpenseAboveTheLimit(@Valid @RequestBody double price)
+    public List<Expense> filterExpenseAboveTheLimit(@Valid @RequestBody double price)
     {
         return expenseService.filterExpenseAboveTheLimit(price);
     }
 
     @PostMapping("/filter/betweentherange")
-    public Map<String,Double> filterExpenseBetweenTheRange(@RequestBody RangeType range)
+    public List<Expense> filterExpenseBetweenTheRange(@RequestBody RangeType range)
     {
         return expenseService.filterExpenseBetweenTheRange(range);
     }

@@ -1,6 +1,7 @@
 package com.expensemanager.smartexpenseapplication.entity;
 
 
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
@@ -11,10 +12,21 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@Entity
 public class Expense {
-    @NotNull
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotBlank
-    @NotEmpty
     private String category;
-    private double expense;
+
+    @NotNull
+    private Double expense;
+
+    @ManyToOne
+    @JoinColumn( name = "user_mobile" , referencedColumnName = "mobile")
+    private User user;
+
+
 }
